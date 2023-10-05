@@ -91,9 +91,10 @@ AnsiConsole.Live(mainTable).Start((ctx) =>
         // load mem data
         memTable.Rows.Clear();
 
-        //var memHelper = new MemoryHelper(mem.Total, mem.AmountUsed);
-
-        memTable.AddRow(new BreakdownChart().AddItem("Used %", Math.Round(mem.PercentUsed, 2), Color.Blue3).AddItem("Available %", Math.Round(mem.PercentAvailable, 2), Color.CornflowerBlue));
+        memTable.AddRow(new BreakdownChart()
+            .ShowPercentage()
+            .AddItem("Used", Math.Round(mem.PercentUsed, 2), Color.Blue3)
+            .AddItem("Available", Math.Round(mem.PercentAvailable, 2), Color.CornflowerBlue));
 
         // load gpu data (if it exists)
         if (gpu.Kind == LibreHardware_Helper.Model.HardwareData.GPU.GpuKind.NVIDIA || gpu.Kind == LibreHardware_Helper.Model.HardwareData.GPU.GpuKind.AMD)
@@ -101,7 +102,10 @@ AnsiConsole.Live(mainTable).Start((ctx) =>
             gpuTable.Rows.Clear();
             gpuMemTable.Rows.Clear();
 
-            gpuTable.AddRow(new BreakdownChart().AddItem("Used %", Math.Round(gpu.Memory.PercentUsed, 2), Color.Blue3).AddItem("Available %", Math.Round(gpu.Memory.PercentAvailable, 2), Color.CornflowerBlue));
+            gpuTable.AddRow(new BreakdownChart()
+                .ShowPercentage()
+                .AddItem("Used", Math.Round(gpu.Memory.PercentUsed, 2), Color.Blue3)
+                .AddItem("Available", Math.Round(gpu.Memory.PercentAvailable, 2), Color.CornflowerBlue));
 
             gpuTable.AddRow(new Markup("Core Load"), new Markup($"{gpu.Loads.Core.ToString("0.0")}%"), new Markup("Video Engine Load"), new Markup($"{gpu.Loads.VideoEngine.ToString("0.0")}%"), gpuMemTable);
             gpuTable.AddRow("Core Temp", $"{gpu.Temps.Core.ToString("0.0")} C", "Bus Load", $"{gpu.Loads.Bus.ToString("0.0")}%", $"Memory Load: {gpu.Loads.Memory.ToString("0.0")}%\nMemory Controller Load: {gpu.Loads.MemoryController.ToString("0.0")}%");
