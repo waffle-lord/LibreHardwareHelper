@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using LibreHardware_Helper;
-using Sandbox.Helpers;
 using Spectre.Console;
 
 var hardwareHelper = new LibreHardwareHelper();
@@ -11,13 +10,15 @@ var mainTable = new Table().HideHeaders();
 mainTable.AddColumn("Data");
 mainTable.Expand();
 
+
+
 AnsiConsole.Live(mainTable).Start((ctx) =>
 {
     // add columns for data
     var cpuTable = new Table().AddColumn("v1").AddColumn("v2").AddColumn("v3").AddColumn("v4").AddColumn("coreTable").HideHeaders().HorizontalBorder();
     var coreTable = new Table().AddColumn("coreName").AddColumn("data").HideHeaders();
 
-    var memTable = new Table().AddColumn("v1").AddColumn("v2").AddColumn("v3").HideHeaders().HorizontalBorder();
+    var memTable = new Table().AddColumn("v1").HideHeaders().HorizontalBorder();
 
     var gpuTable = new Table().AddColumn("v1").AddColumn("v2").AddColumn("v3").AddColumn("v4").AddColumn("v5").HideHeaders().HorizontalBorder();
     var gpuMemTable = new Table().AddColumn("v1").AddColumn("v2").HideHeaders();
@@ -90,9 +91,9 @@ AnsiConsole.Live(mainTable).Start((ctx) =>
         // load mem data
         memTable.Rows.Clear();
 
-        var memHelper = new MemoryHelper(mem.Total, mem.AmountUsed);
+        //var memHelper = new MemoryHelper(mem.Total, mem.AmountUsed);
 
-        memTable.AddRow(memHelper.GetMemoryInfo().EscapeMarkup(), memHelper.GetMemoryProgressBar().EscapeMarkup(), $"{mem.PercentUsed.ToString("0.0")}%");
+        memTable.AddRow(new BreakdownChart().AddItem("Used %", Math.Round(mem.PercentUsed, 2), Color.Blue3).AddItem("Available %", Math.Round(mem.PercentAvailable, 2), Color.CornflowerBlue));
 
         // load gpu data (if it exists)
         if (gpu.Kind == LibreHardware_Helper.Model.HardwareData.GPU.GpuKind.NVIDIA || gpu.Kind == LibreHardware_Helper.Model.HardwareData.GPU.GpuKind.AMD)
@@ -100,10 +101,7 @@ AnsiConsole.Live(mainTable).Start((ctx) =>
             gpuTable.Rows.Clear();
             gpuMemTable.Rows.Clear();
 
-            var gpuMemHelper = new MemoryHelper(gpu.Memory.Total, gpu.Memory.AmountUsed);
-
-            gpuMemTable.AddRow(gpuMemHelper.GetMemoryInfo().EscapeMarkup(), $"{gpu.Memory.PercentUsed.ToString("0")}%");
-            gpuMemTable.AddRow(gpuMemHelper.GetMemoryProgressBar().EscapeMarkup());
+            gpuTable.AddRow(new BreakdownChart().AddItem("Used %", Math.Round(gpu.Memory.PercentUsed, 2), Color.Blue3).AddItem("Available %", Math.Round(gpu.Memory.PercentAvailable, 2), Color.CornflowerBlue));
 
             gpuTable.AddRow(new Markup("Core Load"), new Markup($"{gpu.Loads.Core.ToString("0.0")}%"), new Markup("Video Engine Load"), new Markup($"{gpu.Loads.VideoEngine.ToString("0.0")}%"), gpuMemTable);
             gpuTable.AddRow("Core Temp", $"{gpu.Temps.Core.ToString("0.0")} C", "Bus Load", $"{gpu.Loads.Bus.ToString("0.0")}%", $"Memory Load: {gpu.Loads.Memory.ToString("0.0")}%\nMemory Controller Load: {gpu.Loads.MemoryController.ToString("0.0")}%");
