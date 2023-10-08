@@ -52,9 +52,55 @@ namespace LibreHardware_Helper.Model.HardwareData.Memory
             }
         }
 
+        private float _VirtualPercentUsed;
+        public float VirtualPercentUsed
+        {
+            get => _VirtualPercentUsed;
+            private set
+            {
+                if (_VirtualPercentUsed != value)
+                {
+                    _VirtualPercentUsed = value;
+                    RaisePropertyChanged(nameof(VirtualPercentUsed));
+                    RaisePropertyChanged(nameof(VirtualPercentAvailable));
+                }
+            }
+        }
+
+        private float _VirtualAmountUsed;
+        public float VirtualAmountUsed
+        {
+            get => _VirtualAmountUsed;
+            private set
+            {
+                if (_VirtualAmountUsed != value)
+                {
+                    _VirtualAmountUsed = value;
+                    RaisePropertyChanged(nameof(VirtualAmountUsed));
+                    RaisePropertyChanged(nameof(VirtualTotal));
+                }
+            }
+        }
+
+        private float _VirtualAmountAvailable;
+        public float VirtualAmountAvailable
+        {
+            get => _VirtualAmountAvailable;
+            private set
+            {
+                if (_VirtualAmountAvailable != value)
+                {
+                    _VirtualAmountAvailable = value;
+                    RaisePropertyChanged(nameof(VirtualAmountAvailable));
+                }
+            }
+        }
+
         public float Total => AmountUsed + AmountAvailable;
+        public float VirtualTotal => VirtualAmountUsed + VirtualAmountAvailable;
 
         public float PercentAvailable => 100 - PercentUsed;
+        public float VirtualPercentAvailable => 100 - VirtualPercentUsed;
 
         public MemoryData(IHardware Memory, LibreHardwareHelper helper)
         {
@@ -79,6 +125,21 @@ namespace LibreHardware_Helper.Model.HardwareData.Memory
                     case "Memory Available":
                         {
                             AmountAvailable = s.Value ?? 0;
+                            break;
+                        }
+                    case "Virtual Memory":
+                        {
+                            VirtualPercentUsed = s.Value ?? 0;
+                            break;
+                        }
+                    case "Virtual Memory Used":
+                        {
+                            VirtualAmountUsed = s.Value ?? 0;
+                            break;
+                        }
+                    case "Virtual Memory Available":
+                        {
+                            VirtualAmountAvailable = s.Value ?? 0;
                             break;
                         }
                 }

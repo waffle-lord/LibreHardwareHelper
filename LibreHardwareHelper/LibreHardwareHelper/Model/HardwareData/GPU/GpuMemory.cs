@@ -85,8 +85,8 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
             }
         }
 
-        public double PercentUsed => Math.Floor(_AmountUsed / _Total * 100);
-        public double PercentAvailable => Math.Floor(_AmountAvailable / _Total * 100);
+        public float PercentUsed => (float)Math.Floor(_AmountUsed / _Total * 100);
+        public float PercentAvailable => (float)Math.Floor(_AmountAvailable / _Total * 100);
 
         public GpuMemory(IHardware gpu, LibreHardwareHelper helper)
         {

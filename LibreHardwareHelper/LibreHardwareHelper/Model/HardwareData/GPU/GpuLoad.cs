@@ -196,6 +196,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
 
             Core = loads.Core;
             MemoryController = loads.MemoryController;
+            VideoEngine = loads.VideoEngine;
             Memory = loads.Memory;
             Bus = loads.Bus;
             Power = loads.Power;
