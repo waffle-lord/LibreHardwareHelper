@@ -28,14 +28,14 @@ namespace Sandbox.Display.LayoutManagers
             var memBreakdown = new BreakdownChart()
                 .Expand()
                 .ShowPercentage()
-                .AddItem($"{_mem.AmountUsed.ToString("0.0")} / {_mem.Total.ToString("0.0")} Used", Math.Round(_mem.PercentUsed, 1), GetPercentColor(_mem.PercentUsed))
-                .AddItem($"{_mem.AmountAvailable.ToString("0.0")} Available", Math.Round(_mem.PercentAvailable, 1), Color.Grey);
+                .AddItem($"{_mem.AmountUsed.ToString("0.0")} Gb / {_mem.Total.ToString("0.0")} Gb Used", Math.Round(_mem.PercentUsed, 1), GetPercentColor(_mem.PercentUsed))
+                .AddItem($"{_mem.AmountAvailable.ToString("0.0")} Gb Available", Math.Round(_mem.PercentAvailable, 1), Color.Grey);
 
             var virturalMemBreakdown = new BreakdownChart()
                 .Expand()
                 .ShowPercentage()
-                .AddItem($"{_mem.VirtualAmountUsed.ToString("0.0")} / {_mem.VirtualTotal.ToString("0.0")} Used", Math.Round(_mem.VirtualPercentUsed, 1), GetPercentColor(_mem.VirtualPercentUsed))
-                .AddItem($"{_mem.VirtualAmountAvailable.ToString("0.0")} Available", Math.Round(_mem.VirtualPercentAvailable, 1), Color.Grey);
+                .AddItem($"{_mem.VirtualAmountUsed.ToString("0.0")} Gb / {_mem.VirtualTotal.ToString("0.0")} Gb Used", Math.Round(_mem.VirtualPercentUsed, 1), GetPercentColor(_mem.VirtualPercentUsed))
+                .AddItem($"{_mem.VirtualAmountAvailable.ToString("0.0")} G Available", Math.Round(_mem.VirtualPercentAvailable, 1), Color.Grey);
 
             var memGrid = new Grid()
                 .AddColumn()

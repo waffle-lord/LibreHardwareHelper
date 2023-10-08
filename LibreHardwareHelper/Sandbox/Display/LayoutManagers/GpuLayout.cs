@@ -15,6 +15,11 @@ namespace Sandbox.Display.LayoutManagers
             Layout = new Layout("gpu");
         }
 
+        private string GetGpuMemString(float mb)
+        {
+            return mb >= 1024 ? $"{(mb / 1024).ToString("0.0")} Gb" : $"{mb.ToString("0.0")} Mb";
+        }
+
         public void Update()
         {
             if (_gpu == null || _gpu.Kind == GpuKind.Unknown)
@@ -36,10 +41,12 @@ namespace Sandbox.Display.LayoutManagers
                 .AddRow("Bus Load", GetPercentColorString(_gpu.Loads.Bus), "%")
                 .AddRow("Power Load", GetPercentColorString(_gpu.Loads.Power), "%");
 
+            
+
             var gpuMemory = new BreakdownChart()
                 .ShowPercentage()
-                .AddItem($"{_gpu.Memory.AmountUsed.ToString("0.0")} / {_gpu.Memory.Total.ToString("0.0")} Used", _gpu.Memory.PercentUsed, GetPercentColor(_gpu.Memory.PercentUsed))
-                .AddItem($"{_gpu.Memory.AmountAvailable.ToString("0.0")} Available", _gpu.Memory.PercentAvailable, Color.Grey);
+                .AddItem($"{GetGpuMemString(_gpu.Memory.AmountUsed)} / {GetGpuMemString(_gpu.Memory.Total)} Used", _gpu.Memory.PercentUsed, GetPercentColor(_gpu.Memory.PercentUsed))
+                .AddItem($"{GetGpuMemString(_gpu.Memory.AmountAvailable)} Available", _gpu.Memory.PercentAvailable, Color.Grey);
 
 
             gpuTable.AddRow(gpuInfoGrid, gpuMemory);
