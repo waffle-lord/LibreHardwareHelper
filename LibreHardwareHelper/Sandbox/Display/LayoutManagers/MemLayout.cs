@@ -6,7 +6,7 @@ namespace Sandbox.Display.LayoutManagers
 {
     internal class MemLayout : LayoutManagerBase, IDisplayLayout
     {
-        private MemoryData _mem;
+        private MemoryData? _mem;
         public Layout Layout { get; private set; }
 
         public MemLayout(MemoryData mem)
@@ -17,15 +17,37 @@ namespace Sandbox.Display.LayoutManagers
 
         public void Update()
         {
+            if (_mem == null)
+            {
+                Layout["mem"].Update(new Align(new Text("could not get memory"), HorizontalAlignment.Center, VerticalAlignment.Middle));
+                return;
+            }
+
             _mem.Update();
 
-            Layout["mem"].Update(new Panel(
-                new BreakdownChart()
+            var memBreakdown = new BreakdownChart()
                 .Expand()
                 .ShowPercentage()
-                .AddItem("Used", Math.Round(_mem.PercentUsed, 1), GetPercentColor(_mem.PercentUsed))
-                .AddItem("Available", Math.Round(_mem.PercentAvailable, 1), Color.Grey)
-                ).Header("Memory"));
+                .AddItem($"{_mem.AmountUsed.ToString("0.0")} / {_mem.Total.ToString("0.0")} Used", Math.Round(_mem.PercentUsed, 1), GetPercentColor(_mem.PercentUsed))
+                .AddItem($"{_mem.AmountAvailable.ToString("0.0")} Available", Math.Round(_mem.PercentAvailable, 1), Color.Grey);
+
+            var virturalMemBreakdown = new BreakdownChart()
+                .Expand()
+                .ShowPercentage()
+                .AddItem($"{_mem.VirtualAmountUsed.ToString("0.0")} / {_mem.VirtualTotal.ToString("0.0")} Used", Math.Round(_mem.VirtualPercentUsed, 1), GetPercentColor(_mem.VirtualPercentUsed))
+                .AddItem($"{_mem.VirtualAmountAvailable.ToString("0.0")} Available", Math.Round(_mem.VirtualPercentAvailable, 1), Color.Grey);
+
+            var memGrid = new Grid()
+                .AddColumn()
+                .AddRow() // spacer
+                .AddRow(new Rule("Physical").LeftJustified())
+                .AddRow(memBreakdown)
+                .AddRow(new Rule("Virtual").LeftJustified())
+                .AddRow(virturalMemBreakdown);
+
+            Layout["mem"].Update(new Panel(
+                memGrid
+                ).Header("Memory").Expand());
         }
     }
 }

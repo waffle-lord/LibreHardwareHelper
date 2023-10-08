@@ -31,17 +31,17 @@ namespace Sandbox.Display.LayoutManagers
             switch (valueRange)
             {
                 case ColorRange.Low:
-                    return $"[blue]{percent.ToString("0.0").EscapeMarkup()}[/] %";
+                    return $"[blue]{percent.ToString("0.0").EscapeMarkup()}[/]";
 
                 case ColorRange.Medium:
-                    return $"[yellow]{percent.ToString("0.0").EscapeMarkup()}[/] %";
+                    return $"[yellow]{percent.ToString("0.0").EscapeMarkup()}[/]";
 
                 case ColorRange.High:
-                    return $"[red]{percent.ToString("0.0").EscapeMarkup()}[/] %";
+                    return $"[red]{percent.ToString("0.0").EscapeMarkup()}[/]";
 
                 case ColorRange.None:
                 default:
-                    return $"[grey]{percent.ToString("0.0").EscapeMarkup()}[/] %";
+                    return $"[grey]{percent.ToString("0.0").EscapeMarkup()}[/]";
 
             }
         }
@@ -67,16 +67,16 @@ namespace Sandbox.Display.LayoutManagers
             }
         }
 
-        public string GetTempColor(float temp)
+        public string GetTempColorString(float temp)
         {
             switch (temp)
             {
                 case float t when t > 80:
-                    return $"[red]{temp.ToString("0.0").EscapeMarkup()}[/] C";
+                    return $"[red]{temp.ToString("0.0").EscapeMarkup()}[/]";
                 case float t when t > 50:
-                    return $"[yellow]{temp.ToString("0.0").EscapeMarkup()}[/] C";
+                    return $"[yellow]{temp.ToString("0.0").EscapeMarkup()}[/]";
                 default:
-                    return $"[blue]{temp.ToString("0.0").EscapeMarkup()}[/] C";
+                    return $"[blue]{temp.ToString("0.0").EscapeMarkup()}[/]";
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using LibreHardware_Helper;
-using LibreHardware_Helper.Model.HardwareData.GPU;
 using Sandbox.Display.LayoutManagers;
 using Sandbox.Interfaces;
 using Spectre.Console;
@@ -15,22 +14,12 @@ namespace Sandbox.Display
 
         public SystemMonitorDisplay()
         {
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                Console.SetWindowSize(Console.WindowWidth, 33);
+
             _consoleHeight = Console.WindowHeight;
             _consoleWidth = Console.WindowWidth;
             _libreHardwareHelper = new LibreHardwareHelper();
-
-            var cpuData = _libreHardwareHelper.GetCpuData();
-            var memData = _libreHardwareHelper.GetMemoryData();
-            var gpuData = _libreHardwareHelper.GetGpuData();
-
-            if (cpuData != null)
-                _layouts.Add(new CpuLayout(cpuData));
-
-            if (memData != null)
-                _layouts.Add(new MemLayout(memData));
-
-            if (gpuData != null && (gpuData.Kind == GpuKind.NVIDIA || gpuData.Kind == GpuKind.AMD))
-                _layouts.Add(new GpuLayout(gpuData));
         }
 
         public async Task StartRendering()
@@ -39,8 +28,41 @@ namespace Sandbox.Display
             {
                 var rootLayout = new Layout("root");
 
-                // add layouts to root
-                rootLayout.SplitRows(_layouts.Select(x => x.Layout).ToArray());
+                // get initial data
+                var cpuData = _libreHardwareHelper.GetCpuData();
+                var memData = _libreHardwareHelper.GetMemoryData();
+                var gpuData = _libreHardwareHelper.GetGpuData();
+
+                // setup layout
+                var cpuLayout = new CpuLayout(cpuData);
+                var memLayout = new MemLayout(memData);
+                var gpuLayout = new GpuLayout(gpuData);
+
+                var diskLayout = new Layout("disk");
+                var netLayout = new Layout("net");
+
+                var topLayout = new Layout("top")
+                    .Ratio(2)
+                    .SplitColumns(
+                    cpuLayout.Layout,
+                    new Layout("topRight").SplitRows(
+                        memLayout.Layout.Size(10),
+                        diskLayout
+                    ));
+
+                var bottomLayout = new Layout("bottom")
+                    .SplitColumns(
+                    netLayout,
+                    gpuLayout.Layout.Ratio(2)
+                    );
+
+                rootLayout.SplitRows(topLayout, bottomLayout);
+
+                // add layouts for updating
+                _layouts.Clear();
+                _layouts.Add(cpuLayout);
+                _layouts.Add(memLayout);
+                _layouts.Add(gpuLayout);
 
                 // run live console
                 await AnsiConsole.Live(rootLayout).StartAsync(async ctx =>
