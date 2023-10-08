@@ -1,9 +1,8 @@
 ﻿using LibreHardwareMonitor.Hardware;
-using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.CPU
 {
-    public class CpuClock : INotifyPropertyChanged
+    public class CpuClock : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -11,14 +10,7 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
         public float BusSpeed
         {
             get => _BusSpeed;
-            private set
-            {
-                if (_BusSpeed != value)
-                {
-                    _BusSpeed = value;
-                    RaisePropertyChanged(nameof(BusSpeed));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _BusSpeed, value);
         }
 
         public CpuClock(IHardware cpu, LibreHardwareHelper helper)
@@ -50,12 +42,6 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
             CpuClock tempClocks = _helper.GetCpuClock(null, DontQueryHardware);
 
             BusSpeed = tempClocks.BusSpeed;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

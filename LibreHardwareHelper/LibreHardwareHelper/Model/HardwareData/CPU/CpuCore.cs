@@ -1,38 +1,22 @@
-﻿using System.ComponentModel;
-
-namespace LibreHardware_Helper.Model.HardwareData.CPU
+﻿namespace LibreHardware_Helper.Model.HardwareData.CPU
 {
     /// <summary>
     /// All data relevent to a single CPU core
     /// </summary>
-    public class CpuCore : INotifyPropertyChanged
+    public class CpuCore : PropertyNotifierBase
     {
         private int _Number;
         public int Number
         {
             get => _Number;
-            private set
-            {
-                if (_Number != value)
-                {
-                    _Number = value;
-                    RaisePropertyChange(nameof(Number));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Number, value);
         }
 
         private string _Name;
         public string Name
         {
             get => _Name;
-            private set
-            {
-                if (_Name != value)
-                {
-                    _Name = value;
-                    RaisePropertyChange(nameof(Name));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Name, value);
         }
 
         private float _Temp;
@@ -44,8 +28,8 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
                 if (_Temp != value)
                 {
                     _Temp = value;
-                    RaisePropertyChange(nameof(Temp));
-                    RaisePropertyChange(nameof(TempPercentage));
+                    RaisePropertyChanged(nameof(Temp));
+                    RaisePropertyChanged(nameof(TempPercentage));
                 }
             }
         }
@@ -64,42 +48,21 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
         public float Load
         {
             get => _Load;
-            private set
-            {
-                if (_Load != value)
-                {
-                    _Load = value;
-                    RaisePropertyChange(nameof(Load));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Load, value);
         }
 
         private float _ClockSpeed;
         public float ClockSpeed
         {
             get => _ClockSpeed;
-            set
-            {
-                if (_ClockSpeed != value)
-                {
-                    _ClockSpeed = value;
-                    RaisePropertyChange(nameof(ClockSpeed));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _ClockSpeed, value);
         }
 
         private float _TjMaxDistance;
         public float TjMaxDistance
         {
             get => _TjMaxDistance;
-            set
-            {
-                if (_TjMaxDistance != value)
-                {
-                    _TjMaxDistance = value;
-                    RaisePropertyChange(nameof(TjMaxDistance));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _TjMaxDistance, value);
         }
 
         public float MaxTemp => Temp + TjMaxDistance;
@@ -126,12 +89,6 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
             this.Load = Load;
             this.ClockSpeed = ClockSpeed;
             this.TjMaxDistance = TjMaxDistance;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChange(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

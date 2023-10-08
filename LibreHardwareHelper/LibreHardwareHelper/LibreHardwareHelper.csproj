@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>LibreHardware_Helper</RootNamespace>
+    <Configurations>Debug;Release;monitor</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

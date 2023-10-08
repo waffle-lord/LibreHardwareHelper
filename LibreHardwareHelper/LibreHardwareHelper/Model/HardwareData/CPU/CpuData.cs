@@ -1,11 +1,10 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.CPU
 {
-    public class CpuData : INotifyPropertyChanged
+    public class CpuData : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -13,14 +12,7 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
         public string Name
         {
             get => _Name;
-            private set
-            {
-                if (_Name != value)
-                {
-                    _Name = value;
-                    RaisePropertyChanged(nameof(Name));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Name, value);
         }
 
         public CpuClock Clocks { get; private set; }
@@ -66,12 +58,6 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
             {
                 Cores[x].Update(tempCores[x]);
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

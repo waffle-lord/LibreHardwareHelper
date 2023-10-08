@@ -1,9 +1,8 @@
 ﻿using LibreHardwareMonitor.Hardware;
-using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.CPU
 {
-    public class CpuLoad : INotifyPropertyChanged
+    public class CpuLoad : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -11,14 +10,7 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
         public float Total
         {
             get => _Total;
-            private set
-            {
-                if (_Total != value)
-                {
-                    _Total = value;
-                    RaisePropertyChanged(nameof(Total));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Total, value);
         }
 
         public CpuLoad(IHardware cpu, LibreHardwareHelper helper)
@@ -50,12 +42,6 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
             CpuLoad tempLoads = _helper.GetCpuLoad(null, DontQueryHardware);
 
             Total = tempLoads.Total;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

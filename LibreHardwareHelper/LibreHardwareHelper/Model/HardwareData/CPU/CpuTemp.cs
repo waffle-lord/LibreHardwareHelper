@@ -1,9 +1,8 @@
 ﻿using LibreHardwareMonitor.Hardware;
-using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.CPU
 {
-    public class CpuTemp : INotifyPropertyChanged
+    public class CpuTemp : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -11,42 +10,21 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
         public float CoreAverage
         {
             get => _CoreAverge;
-            private set
-            {
-                if (_CoreAverge != value)
-                {
-                    _CoreAverge = value;
-                    RaisePropertyChange(nameof(CoreAverage));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _CoreAverge, value);
         }
 
         private float _PackageTemp;
         public float PackageTemp
         {
             get => _PackageTemp;
-            private set
-            {
-                if (_PackageTemp != value)
-                {
-                    _PackageTemp = value;
-                    RaisePropertyChange(nameof(PackageTemp));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _PackageTemp, value);
         }
 
         private float _CoreMaxTemp;
         public float CoreMaxTemp
         {
             get => _CoreMaxTemp;
-            private set
-            {
-                if (_CoreMaxTemp != value)
-                {
-                    _CoreMaxTemp = value;
-                    RaisePropertyChange(nameof(CoreMaxTemp));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _CoreMaxTemp, value);
         }
 
         public CpuTemp(IHardware cpu, LibreHardwareHelper helper)
@@ -96,12 +74,6 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
             CoreAverage = tempTemps.CoreAverage;
             PackageTemp = tempTemps.PackageTemp;
             CoreMaxTemp = tempTemps.CoreMaxTemp;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChange(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

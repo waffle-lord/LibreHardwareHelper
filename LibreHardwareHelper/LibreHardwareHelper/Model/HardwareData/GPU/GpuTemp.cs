@@ -1,10 +1,9 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
-using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.GPU
 {
-    public class GpuTemp : INotifyPropertyChanged
+    public class GpuTemp : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -12,14 +11,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float Core
         {
             get => _Core;
-            private set
-            {
-                if (_Core != value)
-                {
-                    _Core = value;
-                    RaisePropertyChanged(nameof(Core));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Core, value);
         }
 
         public GpuTemp(IHardware gpu, LibreHardwareHelper helper)
@@ -48,12 +40,6 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
             var temp = _helper.GetGpuTemp();
 
             Core = temp.Core;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

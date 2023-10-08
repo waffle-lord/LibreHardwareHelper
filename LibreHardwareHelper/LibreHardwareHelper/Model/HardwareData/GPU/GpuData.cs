@@ -1,6 +1,5 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
-using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.GPU
 {
@@ -38,7 +37,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
     <>/gpu-nvidia/0/throughput/1  :: GPU PCIe Tx - 1024000
     */
 
-    public class GpuData : INotifyPropertyChanged
+    public class GpuData : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -46,14 +45,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public string Name
         {
             get => _Name;
-            private set
-            {
-                if (_Name != value)
-                {
-                    _Name = value;
-                    RaisePropertyChanged(nameof(Name));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Name, value);
         }
 
         private GpuKind _Kind;
@@ -99,13 +91,6 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
             Clocks.Update();
             Memory.Update();
             Loads.Update();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void RaisePropertyChanged(string property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
     }
 }

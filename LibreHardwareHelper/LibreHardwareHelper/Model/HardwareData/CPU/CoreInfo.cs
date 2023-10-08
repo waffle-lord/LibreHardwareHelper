@@ -1,8 +1,6 @@
-﻿using System.ComponentModel;
-
-namespace LibreHardware_Helper.Model.HardwareData.CPU
+﻿namespace LibreHardware_Helper.Model.HardwareData.CPU
 {
-    public class CoreInfo : INotifyPropertyChanged
+    public class CoreInfo : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -10,42 +8,21 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
         public int Number
         {
             get => _Number;
-            private set
-            {
-                if (_Number != value)
-                {
-                    _Number = value;
-                    RaisePropertyChanged(nameof(Number));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Number, value);
         }
 
         private string _Name;
         public string Name
         {
             get => _Name;
-            private set
-            {
-                if (_Name != value)
-                {
-                    _Name = value;
-                    RaisePropertyChanged(nameof(Name));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Name, value);
         }
 
         private float _Value;
         public float Value
         {
             get => _Value;
-            private set
-            {
-                if (_Value != value)
-                {
-                    _Value = value;
-                    RaisePropertyChanged(nameof(Value));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Value, value);
         }
 
         /// <summary>
@@ -64,12 +41,6 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
             this.Number = _helper.GetCoreNumber(Name);
             this.Name = Name;
             this.Value = Value ?? 0;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

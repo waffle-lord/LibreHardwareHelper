@@ -1,10 +1,9 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
-using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.GPU
 {
-    public class GpuMemory : INotifyPropertyChanged
+    public class GpuMemory : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -12,30 +11,14 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float D3DDedicatedUsed
         {
             get => _D3DDedicatedUsed;
-            private set
-            {
-                if (_D3DDedicatedUsed != value)
-                {
-                    _D3DDedicatedUsed = value;
-
-                    RaisePropertyChanged(nameof(D3DDedicatedUsed));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _D3DDedicatedUsed, value);
         }
 
         private float _D3DSharedUsed;
         public float D3DSharedUsed
         {
             get => _D3DSharedUsed;
-            private set
-            {
-                if (_D3DSharedUsed != value)
-                {
-                    _D3DSharedUsed = value;
-
-                    RaisePropertyChanged(nameof(D3DSharedUsed));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _D3DSharedUsed, value);
         }
 
 
@@ -43,15 +26,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float AmountUsed
         {
             get => _AmountUsed;
-            private set
-            {
-                if (_AmountUsed != value)
-                {
-                    _AmountUsed = value;
-
-                    RaisePropertyChanged(nameof(AmountUsed));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _AmountUsed, value);
         }
 
 
@@ -59,30 +34,14 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float AmountAvailable
         {
             get => _AmountAvailable;
-            private set
-            {
-                if (_AmountAvailable != value)
-                {
-                    _AmountAvailable = value;
-
-                    RaisePropertyChanged(nameof(AmountAvailable));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _AmountAvailable, value);
         }
 
         private float _Total;
         public float Total
         {
             get => _Total;
-            private set
-            {
-                if (_Total != value)
-                {
-                    _Total = value;
-
-                    RaisePropertyChanged(nameof(Total));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Total, value);
         }
 
         public float PercentUsed => (float)Math.Floor(_AmountUsed / _Total * 100);
@@ -139,12 +98,6 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
             Total = memory.Total;
             AmountAvailable = memory.AmountAvailable;
             AmountUsed = memory.AmountUsed;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

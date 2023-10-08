@@ -1,9 +1,8 @@
 ﻿using LibreHardwareMonitor.Hardware;
-using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.CPU
 {
-    public class CpuPower : INotifyPropertyChanged
+    public class CpuPower : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -11,56 +10,28 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
         public float Package
         {
             get => _Package;
-            private set
-            {
-                if (_Package != value)
-                {
-                    _Package = value;
-                    RaisePropertyChanged(nameof(Package));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Package, value);
         }
 
         private float _Cores;
         public float Cores
         {
             get => _Cores;
-            private set
-            {
-                if (_Cores != value)
-                {
-                    _Cores = value;
-                    RaisePropertyChanged(nameof(Cores));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Cores, value);
         }
 
         private float _Graphics;
         public float Graphics
         {
             get => _Graphics;
-            private set
-            {
-                if (_Graphics != value)
-                {
-                    _Graphics = value;
-                    RaisePropertyChanged(nameof(Graphics));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Graphics, value);
         }
 
         private float _Memory;
         public float Memory
         {
             get => _Memory;
-            private set
-            {
-                if (_Memory != value)
-                {
-                    _Memory = value;
-                    RaisePropertyChanged(nameof(Memory));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Memory, value);
         }
 
         public CpuPower(IHardware cpu, LibreHardwareHelper helper)
@@ -111,12 +82,6 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU
             Cores = tempPower.Cores;
             Graphics = tempPower.Graphics;
             Memory = tempPower.Memory;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

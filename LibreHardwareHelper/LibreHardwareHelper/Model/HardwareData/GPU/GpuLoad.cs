@@ -1,17 +1,16 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
-using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.GPU
 {
     /*
-        /gpu-nvidia/0/load/0        :: GPU Core - 4
-        /gpu-nvidia/0/load/1        :: GPU Memory Controller - 1
-        /gpu-nvidia/0/load/2        :: GPU Video Engine - 0
-        /gpu-nvidia/0/load/3        :: GPU Bus - 0
-        /gpu-nvidia/0/load/4        :: GPU Memory - 18.602753
-        /gpu-nvidia/0/load/5        :: GPU Power - 22.81
-        /gpu-nvidia/0/load/6        :: GPU Board Power - 22.49
+        -/gpu-nvidia/0/load/0        :: GPU Core - 4
+        -/gpu-nvidia/0/load/1        :: GPU Memory Controller - 1
+        -/gpu-nvidia/0/load/2        :: GPU Video Engine - 0
+        -/gpu-nvidia/0/load/3        :: GPU Bus - 0
+        -/gpu-nvidia/0/load/4        :: GPU Memory - 18.602753
+        -/gpu-nvidia/0/load/5        :: GPU Power - 22.81
+        -/gpu-nvidia/0/load/6        :: GPU Board Power - 22.49
         /gpu-nvidia/0/load/7        :: D3D 3D - 0
         /gpu-nvidia/0/load/11       :: D3D Overlay - 0
         /gpu-nvidia/0/load/13       :: D3D Video Decode - 0
@@ -23,7 +22,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         /gpu-nvidia/0/load/15       :: D3D VR - 0
     */
 
-    public class GpuLoad : INotifyPropertyChanged
+    public class GpuLoad : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -31,15 +30,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float Core
         {
             get => _Core;
-            private set
-            {
-                if (_Core != value)
-                {
-                    _Core = value;
-
-                    RaisePropertyChanged(nameof(Core));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Core, value);
         }
 
 
@@ -47,15 +38,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float MemoryController
         {
             get => _MemoryController;
-            private set
-            {
-                if (_MemoryController != value)
-                {
-                    _MemoryController = value;
-
-                    RaisePropertyChanged(nameof(MemoryController));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _MemoryController, value);
         }
 
 
@@ -63,15 +46,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float VideoEngine
         {
             get => _VideoEngine;
-            private set
-            {
-                if (_VideoEngine != value)
-                {
-                    _VideoEngine = value;
-
-                    RaisePropertyChanged(nameof(VideoEngine));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _VideoEngine, value);
         }
 
 
@@ -79,15 +54,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float Bus
         {
             get => _Bus;
-            private set
-            {
-                if (_Bus != value)
-                {
-                    _Bus = value;
-
-                    RaisePropertyChanged(nameof(Bus));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Bus, value);
         }
 
 
@@ -95,15 +62,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float Memory
         {
             get => _Memory;
-            private set
-            {
-                if (_Memory != value)
-                {
-                    _Memory = value;
-
-                    RaisePropertyChanged(nameof(Memory));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Memory, value);
         }
 
 
@@ -111,15 +70,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float Power
         {
             get => _Power;
-            private set
-            {
-                if (_Power != value)
-                {
-                    _Power = value;
-
-                    RaisePropertyChanged(nameof(Power));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _Power, value);
         }
 
 
@@ -127,15 +78,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float BoardPower
         {
             get => _BoardPower;
-            private set
-            {
-                if (_BoardPower != value)
-                {
-                    _BoardPower = value;
-
-                    RaisePropertyChanged(nameof(BoardPower));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _BoardPower, value);
         }
 
         public GpuLoad(IHardware gpu, LibreHardwareHelper helper)
@@ -201,12 +144,6 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
             Bus = loads.Bus;
             Power = loads.Power;
             BoardPower = loads.BoardPower;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

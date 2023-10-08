@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.Memory
 {
-    public class MemoryData : INotifyPropertyChanged
+    public class MemoryData : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -42,14 +42,7 @@ namespace LibreHardware_Helper.Model.HardwareData.Memory
         public float AmountAvailable
         {
             get => _AmountAvailable;
-            private set
-            {
-                if (_AmountAvailable != value)
-                {
-                    _AmountAvailable = value;
-                    RaisePropertyChanged(nameof(AmountAvailable));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _AmountAvailable, value);
         }
 
         private float _VirtualPercentUsed;
@@ -86,14 +79,7 @@ namespace LibreHardware_Helper.Model.HardwareData.Memory
         public float VirtualAmountAvailable
         {
             get => _VirtualAmountAvailable;
-            private set
-            {
-                if (_VirtualAmountAvailable != value)
-                {
-                    _VirtualAmountAvailable = value;
-                    RaisePropertyChanged(nameof(VirtualAmountAvailable));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _VirtualAmountAvailable, value);
         }
 
         public float Total => AmountUsed + AmountAvailable;
@@ -157,6 +143,10 @@ namespace LibreHardware_Helper.Model.HardwareData.Memory
             AmountUsed = memData.AmountUsed;
             AmountAvailable = memData.AmountAvailable;
 
+            VirtualPercentUsed = memData.VirtualPercentUsed;
+            VirtualAmountUsed = memData.VirtualAmountUsed;
+            VirtualAmountAvailable = memData.VirtualAmountAvailable;
+
             RaiseDataUpdated();
         }
 
@@ -164,12 +154,6 @@ namespace LibreHardware_Helper.Model.HardwareData.Memory
         protected virtual void RaiseDataUpdated()
         {
             DataUpdated?.Invoke(this, null);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }

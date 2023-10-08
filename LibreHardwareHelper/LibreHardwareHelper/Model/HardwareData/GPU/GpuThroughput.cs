@@ -1,10 +1,9 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
-using System.ComponentModel;
 
 namespace LibreHardware_Helper.Model.HardwareData.GPU
 {
-    public class GpuThroughput : INotifyPropertyChanged
+    public class GpuThroughput : PropertyNotifierBase
     {
         private LibreHardwareHelper _helper;
 
@@ -12,28 +11,14 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
         public float PCIeTrasmit
         {
             get => _PCIeTransmit;
-            private set
-            {
-                if (_PCIeTransmit != value)
-                {
-                    _PCIeTransmit = value;
-                    RaisePropertyChanged(nameof(PCIeTrasmit));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _PCIeTransmit, value);
         }
 
         private float _PCIeReceive;
         public float PCIeReceive
         {
             get => _PCIeReceive;
-            private set
-            {
-                if (_PCIeReceive != value)
-                {
-                    _PCIeReceive = value;
-                    RaisePropertyChanged(nameof(PCIeReceive));
-                }
-            }
+            private set => RaiseAndSetIfChanged(ref _PCIeReceive, value);
         }
 
 
@@ -72,12 +57,6 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU
 
             PCIeReceive = throughput.PCIeReceive;
             PCIeTrasmit = throughput.PCIeTrasmit;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string Property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
     }
 }
