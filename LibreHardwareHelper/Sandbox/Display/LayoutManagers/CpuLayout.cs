@@ -29,7 +29,7 @@ namespace Sandbox.Display.LayoutManagers
             var packageInfoGrid = new Grid().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn();
 
             packageInfoGrid.AddRow();
-            packageInfoGrid.AddRow("Total Load", GetPercentColorString(_cpu.Loads.Total), "%", "Bus Speed", $"{_cpu.Clocks.BusSpeed.ToString("0.0")}", "MHz");
+            packageInfoGrid.AddRow("Total Load", GetPercentColorString(_cpu.Loads.Total), "%", "Bus Speed", $"[grey]{_cpu.Clocks.BusSpeed.ToString("0.0").EscapeMarkup()}[/]", "MHz");
             packageInfoGrid.AddRow("Package Temp", GetTempColorString(_cpu.Temps.PackageTemp), "C", "Core Temp Average", GetTempColorString(_cpu.Temps.CoreAverage), "C");
 
             // core info

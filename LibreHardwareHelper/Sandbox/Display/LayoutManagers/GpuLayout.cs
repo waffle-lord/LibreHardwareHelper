@@ -27,10 +27,10 @@ namespace Sandbox.Display.LayoutManagers
                 Layout["gpu"].Update(new Align(new Text("No gpu detected"), HorizontalAlignment.Center, VerticalAlignment.Middle));
                 return;
             }
-                
+
             _gpu.Update();
 
-            var gpuTable = new Table().AddColumn("Info").AddColumn("Memory").MinimalBorder().Expand();
+            var gpuTable = new Table().AddColumn("Info").AddColumn($"Memory (Total: {GetGpuMemString(_gpu.Memory.Total)})").MinimalBorder().Expand();
 
             var gpuInfoGrid = new Grid()
                 .AddColumn()
@@ -39,13 +39,15 @@ namespace Sandbox.Display.LayoutManagers
                 .AddRow("Core Load", GetPercentColorString(_gpu.Loads.Core), "%")
                 .AddRow("Mem Controller", GetPercentColorString(_gpu.Loads.MemoryController), "%")
                 .AddRow("Bus Load", GetPercentColorString(_gpu.Loads.Bus), "%")
-                .AddRow("Power Load", GetPercentColorString(_gpu.Loads.Power), "%");
+                .AddRow("Power Load", GetPercentColorString(_gpu.Loads.Power), "%")
+                .AddRow("Trasmit", $"[grey]{Math.Round((_gpu.Throughput.PCIeTrasmit / 1024 / 1024), 1)}[/]", "Mb")
+                .AddRow("Receive", $"[grey]{Math.Round((_gpu.Throughput.PCIeReceive / 1024 / 1024), 1)}[/]", "Mb");
 
             
 
             var gpuMemory = new BreakdownChart()
                 .ShowPercentage()
-                .AddItem($"{GetGpuMemString(_gpu.Memory.AmountUsed)} / {GetGpuMemString(_gpu.Memory.Total)} Used", _gpu.Memory.PercentUsed, GetPercentColor(_gpu.Memory.PercentUsed))
+                .AddItem($"{GetGpuMemString(_gpu.Memory.AmountUsed)} Used", _gpu.Memory.PercentUsed, GetPercentColor(_gpu.Memory.PercentUsed))
                 .AddItem($"{GetGpuMemString(_gpu.Memory.AmountAvailable)} Available", _gpu.Memory.PercentAvailable, Color.Grey);
 
 

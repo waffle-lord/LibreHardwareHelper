@@ -17,8 +17,6 @@ namespace Sandbox.Display
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                 Console.SetWindowSize(Console.WindowWidth, 33);
 
-            _consoleHeight = Console.WindowHeight;
-            _consoleWidth = Console.WindowWidth;
             _libreHardwareHelper = new LibreHardwareHelper();
         }
 
@@ -26,7 +24,10 @@ namespace Sandbox.Display
         {
             while (true)
             {
-                var rootLayout = new Layout("root");
+                // save console size to handle resizing
+                _layouts.Clear();
+                _consoleHeight = Console.WindowHeight;
+                _consoleWidth = Console.WindowWidth;
 
                 // get initial data
                 var cpuData = _libreHardwareHelper.GetCpuData();
@@ -56,15 +57,17 @@ namespace Sandbox.Display
                     gpuLayout.Layout.Ratio(2)
                     );
 
+                var rootLayout = new Layout("root");
+
                 rootLayout.SplitRows(topLayout, bottomLayout);
 
-                // add layouts for updating
-                _layouts.Clear();
+                // save layouts for updating
                 _layouts.Add(cpuLayout);
                 _layouts.Add(memLayout);
                 _layouts.Add(gpuLayout);
 
                 // run live console
+                Console.Clear();
                 await AnsiConsole.Live(rootLayout).StartAsync(async ctx =>
                 {
                     do
