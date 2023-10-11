@@ -9,8 +9,8 @@ namespace Sandbox.Display
     {
         int _consoleHeight;
         int _consoleWidth;
-        LibreHardwareHelper _libreHardwareHelper;
-        List<IDisplayLayout> _layouts = new List<IDisplayLayout>();
+        private readonly LibreHardwareHelper _libreHardwareHelper;
+        private readonly List<IDisplayLayout> _layouts = new();
 
         public SystemMonitorDisplay()
         {

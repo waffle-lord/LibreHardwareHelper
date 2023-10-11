@@ -22,7 +22,7 @@ namespace Sandbox.Display.LayoutManagers
 
         public void Update()
         {
-            if (_gpu == null || _gpu.Kind == GpuKind.Unknown)
+            if (_gpu == null || _gpu.Kind == GpuKind.None)
             {
                 Layout["gpu"].Update(new Align(new Text("No gpu detected"), HorizontalAlignment.Center, VerticalAlignment.Middle));
                 return;
