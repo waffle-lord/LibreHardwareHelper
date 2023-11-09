@@ -1,10 +1,9 @@
 ﻿using Spectre.Console;
 
-namespace Sandbox.Interfaces
+namespace Sandbox.Interfaces;
+
+internal interface IDisplayLayout
 {
-    internal interface IDisplayLayout
-    {
-        public Layout Layout { get; }
-        public void Update();
-    }
+    public Layout Layout { get; }
+    public void Update();
 }

@@ -1,10 +1,9 @@
-﻿namespace LibreHardware_Helper.Model.HardwareData.GPU
+﻿namespace LibreHardware_Helper.Model.HardwareData.GPU;
+
+public enum GpuKind
 {
-    public enum GpuKind
-    {
-        Unknown = 0,
-        None = 1,
-        NVIDIA = 2,
-        AMD = 3
-    }
+    Unknown = 0,
+    None = 1,
+    NVIDIA = 2,
+    AMD = 3
 }

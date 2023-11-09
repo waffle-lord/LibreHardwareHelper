@@ -1,6 +1,5 @@
-﻿namespace LibreHardware_Helper.Model.HardwareData.GPU
+﻿namespace LibreHardware_Helper.Model.HardwareData.GPU;
+
+public class GpuPower : PropertyNotifierBase
 {
-    public class GpuPower : PropertyNotifierBase
-    {
-    }
 }

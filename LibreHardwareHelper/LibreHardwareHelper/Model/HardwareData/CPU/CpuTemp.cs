@@ -1,79 +1,80 @@
 ﻿using LibreHardwareMonitor.Hardware;
 
-namespace LibreHardware_Helper.Model.HardwareData.CPU
+namespace LibreHardware_Helper.Model.HardwareData.CPU;
+
+public class CpuTemp : PropertyNotifierBase
 {
-    public class CpuTemp : PropertyNotifierBase
+    private readonly LibreHardwareHelper _helper;
+    private float _CoreAverge;
+
+    private float _CoreMaxTemp;
+
+    private float _PackageTemp;
+
+    public CpuTemp(IHardware cpu, LibreHardwareHelper helper)
     {
-        private LibreHardwareHelper _helper;
+        if (cpu == null) return;
 
-        private float _CoreAverge;
-        public float CoreAverage
+        if (cpu.HardwareType != HardwareType.Cpu) return;
+
+        _helper = helper;
+
+        foreach (var s in cpu.Sensors)
         {
-            get => _CoreAverge;
-            private set => RaiseAndSetIfChanged(ref _CoreAverge, value);
-        }
+            if (s.SensorType != SensorType.Temperature) continue;
 
-        private float _PackageTemp;
-        public float PackageTemp
-        {
-            get => _PackageTemp;
-            private set => RaiseAndSetIfChanged(ref _PackageTemp, value);
-        }
-
-        private float _CoreMaxTemp;
-        public float CoreMaxTemp
-        {
-            get => _CoreMaxTemp;
-            private set => RaiseAndSetIfChanged(ref _CoreMaxTemp, value);
-        }
-
-        public CpuTemp(IHardware cpu, LibreHardwareHelper helper)
-        {
-            if (cpu == null) return;
-
-            if (cpu.HardwareType != HardwareType.Cpu) return;
-
-            _helper = helper;
-
-            foreach (ISensor s in cpu.Sensors)
+            switch (s.Name)
             {
-                if (s.SensorType != SensorType.Temperature) continue;
-
-                switch (s.Name)
+                case "CPU Package":
                 {
-                    case "CPU Package":
-                        {
-                            //add pacakge temp
-                            PackageTemp = s.Value ?? 0;
-                            break;
-                        }
-                    case "Core Max":
-                        {
-                            //add max temp
-                            CoreMaxTemp = s.Value ?? 0;
-                            break;
-                        }
-                    case "Core Average":
-                        {
-                            //add cpu average temp
-                            CoreAverage = s.Value ?? 0;
-                            break;
-                        }
+                    //add pacakge temp
+                    PackageTemp = s.Value ?? 0;
+                    break;
+                }
+                case "Core Max":
+                {
+                    //add max temp
+                    CoreMaxTemp = s.Value ?? 0;
+                    break;
+                }
+                case "Core Average":
+                {
+                    //add cpu average temp
+                    CoreAverage = s.Value ?? 0;
+                    break;
                 }
             }
         }
+    }
 
-        /// <summary>
-        /// Update this <see cref="CpuTemp"/> objects data.
-        /// </summary>
-        /// <param name="DontQueryHardware">Update the values of this object if they differ, but don't ask the hardware to update</param>
-        public void Update(bool DontQueryHardware = false)
-        {
-            CpuTemp tempTemps = _helper.GetCpuTemp(null, DontQueryHardware);
+    public float CoreAverage
+    {
+        get => _CoreAverge;
+        private set => RaiseAndSetIfChanged(ref _CoreAverge, value);
+    }
 
-            CoreAverage = tempTemps.CoreAverage;
-            PackageTemp = tempTemps.PackageTemp;
-            CoreMaxTemp = tempTemps.CoreMaxTemp;
-        }
+    public float PackageTemp
+    {
+        get => _PackageTemp;
+        private set => RaiseAndSetIfChanged(ref _PackageTemp, value);
+    }
+
+    public float CoreMaxTemp
+    {
+        get => _CoreMaxTemp;
+        private set => RaiseAndSetIfChanged(ref _CoreMaxTemp, value);
+    }
+
+    /// <summary>
+    ///     Update this <see cref="CpuTemp" /> objects data.
+    /// </summary>
+    /// <param name="dontQueryHardware">Update the values of this object if they differ, but don't ask the hardware to update</param>
+    public void Update(bool dontQueryHardware = false)
+    {
+        var tempTemps = _helper.GetCpuTemp(null, dontQueryHardware);
+
+        CoreAverage = tempTemps.CoreAverage;
+        PackageTemp = tempTemps.PackageTemp;
+        CoreMaxTemp = tempTemps.CoreMaxTemp;
     }
 }

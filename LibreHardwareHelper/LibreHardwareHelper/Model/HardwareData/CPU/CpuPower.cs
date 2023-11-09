@@ -1,87 +1,87 @@
 ﻿using LibreHardwareMonitor.Hardware;
 
-namespace LibreHardware_Helper.Model.HardwareData.CPU
+namespace LibreHardware_Helper.Model.HardwareData.CPU;
+
+public class CpuPower : PropertyNotifierBase
 {
-    public class CpuPower : PropertyNotifierBase
+    private readonly LibreHardwareHelper _helper;
+    private float _Cores;
+
+    private float _Graphics;
+
+    private float _Memory;
+
+    private float _Package;
+
+    public CpuPower(IHardware cpu, LibreHardwareHelper helper)
     {
-        private LibreHardwareHelper _helper;
+        if (cpu == null) return;
 
-        private float _Package;
-        public float Package
-        {
-            get => _Package;
-            private set => RaiseAndSetIfChanged(ref _Package, value);
-        }
+        if (cpu.HardwareType != HardwareType.Cpu) return;
 
-        private float _Cores;
-        public float Cores
-        {
-            get => _Cores;
-            private set => RaiseAndSetIfChanged(ref _Cores, value);
-        }
+        _helper = helper;
 
-        private float _Graphics;
-        public float Graphics
-        {
-            get => _Graphics;
-            private set => RaiseAndSetIfChanged(ref _Graphics, value);
-        }
-
-        private float _Memory;
-        public float Memory
-        {
-            get => _Memory;
-            private set => RaiseAndSetIfChanged(ref _Memory, value);
-        }
-
-        public CpuPower(IHardware cpu, LibreHardwareHelper helper)
-        {
-            if (cpu == null) return;
-
-            if (cpu.HardwareType != HardwareType.Cpu) return;
-
-            _helper = helper;
-
-            foreach (ISensor s in cpu.Sensors)
+        foreach (var s in cpu.Sensors)
+            switch (s.Name)
             {
-                switch (s.Name)
+                case "CPU Package":
                 {
-                    case "CPU Package":
-                        {
-                            Package = s.Value ?? 0;
-                            break;
-                        }
-                    case "CPU Cores":
-                        {
-                            Cores = s.Value ?? 0;
-                            break;
-                        }
-                    case "CPU Graphics":
-                        {
-                            Graphics = s.Value ?? 0;
-                            break;
-                        }
-                    case "CPU Memory":
-                        {
-                            Memory = s.Value ?? 0;
-                            break;
-                        }
+                    Package = s.Value ?? 0;
+                    break;
+                }
+                case "CPU Cores":
+                {
+                    Cores = s.Value ?? 0;
+                    break;
+                }
+                case "CPU Graphics":
+                {
+                    Graphics = s.Value ?? 0;
+                    break;
+                }
+                case "CPU Memory":
+                {
+                    Memory = s.Value ?? 0;
+                    break;
                 }
             }
-        }
+    }
 
-        /// <summary>
-        /// Update this <see cref="CpuPower"/> objects data.
-        /// </summary>
-        /// <param name="DontQueryHardware">Update the values of this object if they differ, but don't ask the hardware to update</param>
-        public void Update(bool DontQueryHardware = false)
-        {
-            CpuPower tempPower = _helper.GetCpuPower(null, DontQueryHardware);
+    public float Package
+    {
+        get => _Package;
+        private set => RaiseAndSetIfChanged(ref _Package, value);
+    }
 
-            Package = tempPower.Package;
-            Cores = tempPower.Cores;
-            Graphics = tempPower.Graphics;
-            Memory = tempPower.Memory;
-        }
+    public float Cores
+    {
+        get => _Cores;
+        private set => RaiseAndSetIfChanged(ref _Cores, value);
+    }
+
+    public float Graphics
+    {
+        get => _Graphics;
+        private set => RaiseAndSetIfChanged(ref _Graphics, value);
+    }
+
+    public float Memory
+    {
+        get => _Memory;
+        private set => RaiseAndSetIfChanged(ref _Memory, value);
+    }
+
+    /// <summary>
+    ///     Update this <see cref="CpuPower" /> objects data.
+    /// </summary>
+    /// <param name="DontQueryHardware">Update the values of this object if they differ, but don't ask the hardware to update</param>
+    public void Update(bool DontQueryHardware = false)
+    {
+        var tempPower = _helper.GetCpuPower(null, DontQueryHardware);
+
+        Package = tempPower.Package;
+        Cores = tempPower.Cores;
+        Graphics = tempPower.Graphics;
+        Memory = tempPower.Memory;
     }
 }

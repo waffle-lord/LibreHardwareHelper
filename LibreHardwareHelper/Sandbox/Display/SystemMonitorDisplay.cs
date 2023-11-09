@@ -3,88 +3,83 @@ using Sandbox.Display.LayoutManagers;
 using Sandbox.Interfaces;
 using Spectre.Console;
 
-namespace Sandbox.Display
+namespace Sandbox.Display;
+
+internal class SystemMonitorDisplay
 {
-    internal class SystemMonitorDisplay
+    private readonly List<IDisplayLayout> _layouts = new();
+    private readonly LibreHardwareHelper _libreHardwareHelper;
+    private int _consoleHeight;
+    private int _consoleWidth;
+
+    public SystemMonitorDisplay()
     {
-        int _consoleHeight;
-        int _consoleWidth;
-        private readonly LibreHardwareHelper _libreHardwareHelper;
-        private readonly List<IDisplayLayout> _layouts = new();
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            Console.SetWindowSize(Console.WindowWidth, 33);
 
-        public SystemMonitorDisplay()
+        _libreHardwareHelper = new LibreHardwareHelper();
+    }
+
+    public async Task StartRendering()
+    {
+        while (true)
         {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                Console.SetWindowSize(Console.WindowWidth, 33);
+            // save console size to handle resizing
+            _layouts.Clear();
+            _consoleHeight = Console.WindowHeight;
+            _consoleWidth = Console.WindowWidth;
 
-            _libreHardwareHelper = new LibreHardwareHelper();
-        }
+            // get initial data
+            var cpuData = _libreHardwareHelper.GetCpuData();
+            var memData = _libreHardwareHelper.GetMemoryData();
+            var gpuData = _libreHardwareHelper.GetGpuData();
 
-        public async Task StartRendering()
-        {
-            while (true)
-            {
-                // save console size to handle resizing
-                _layouts.Clear();
-                _consoleHeight = Console.WindowHeight;
-                _consoleWidth = Console.WindowWidth;
+            // setup layout
+            var cpuLayout = new CpuLayout(cpuData);
+            var memLayout = new MemLayout(memData);
+            var gpuLayout = new GpuLayout(gpuData);
 
-                // get initial data
-                var cpuData = _libreHardwareHelper.GetCpuData();
-                var memData = _libreHardwareHelper.GetMemoryData();
-                var gpuData = _libreHardwareHelper.GetGpuData();
+            var diskLayout = new Layout("disk");
+            var netLayout = new Layout("net");
 
-                // setup layout
-                var cpuLayout = new CpuLayout(cpuData);
-                var memLayout = new MemLayout(memData);
-                var gpuLayout = new GpuLayout(gpuData);
-
-                var diskLayout = new Layout("disk");
-                var netLayout = new Layout("net");
-
-                var topLayout = new Layout("top")
-                    .Ratio(2)
-                    .SplitColumns(
+            var topLayout = new Layout("top")
+                .Ratio(2)
+                .SplitColumns(
                     cpuLayout.Layout,
                     new Layout("topRight").SplitRows(
                         memLayout.Layout.Size(10),
                         diskLayout
                     ));
 
-                var bottomLayout = new Layout("bottom")
-                    .SplitColumns(
+            var bottomLayout = new Layout("bottom")
+                .SplitColumns(
                     netLayout,
                     gpuLayout.Layout.Ratio(2)
-                    );
+                );
 
-                var rootLayout = new Layout("root");
+            var rootLayout = new Layout("root");
 
-                rootLayout.SplitRows(topLayout, bottomLayout);
+            rootLayout.SplitRows(topLayout, bottomLayout);
 
-                // save layouts for updating
-                _layouts.Add(cpuLayout);
-                _layouts.Add(memLayout);
-                _layouts.Add(gpuLayout);
+            // save layouts for updating
+            _layouts.Add(cpuLayout);
+            _layouts.Add(memLayout);
+            _layouts.Add(gpuLayout);
 
-                // run live console
-                Console.Clear();
-                await AnsiConsole.Live(rootLayout).StartAsync(async ctx =>
+            // run live console
+            Console.Clear();
+            await AnsiConsole.Live(rootLayout).StartAsync(async ctx =>
+            {
+                do
                 {
-                    do
-                    {
-                        // update info every 1 second
-                        await Task.Delay(1000);
+                    // update info every 1 second
+                    await Task.Delay(1000);
 
-                        foreach(var layout in _layouts)
-                        {
-                            layout.Update();
-                        }
+                    foreach (var layout in _layouts) layout.Update();
 
-                        ctx.Refresh();
-                    }
-                    while (Console.WindowHeight == _consoleHeight && Console.WindowWidth == _consoleWidth);
-                });
-            }
+                    ctx.Refresh();
+                } while (Console.WindowHeight == _consoleHeight && Console.WindowWidth == _consoleWidth);
+            });
         }
     }
 }

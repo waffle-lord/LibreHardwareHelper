@@ -2,63 +2,64 @@
 using Sandbox.Interfaces;
 using Spectre.Console;
 
-namespace Sandbox.Display.LayoutManagers
+namespace Sandbox.Display.LayoutManagers;
+
+internal class CpuLayout : LayoutManagerBase, IDisplayLayout
 {
-    internal class CpuLayout : LayoutManagerBase, IDisplayLayout
+    private readonly CpuData? _cpu;
+
+    public CpuLayout(CpuData cpu)
     {
-        private CpuData? _cpu;
-        public Layout Layout { get; private set; }
+        _cpu = cpu;
+        Layout = new Layout("cpu");
+    }
 
-        public CpuLayout(CpuData cpu)
+    public Layout Layout { get; }
+
+    public void Update()
+    {
+        if (_cpu == null)
         {
-            _cpu = cpu;
-            Layout = new Layout("cpu");
+            Layout["cpu"].Update(new Align(new Text("could not get cpu info"), HorizontalAlignment.Center,
+                VerticalAlignment.Middle));
+            return;
         }
 
-        public void Update()
-        {
-            if (_cpu == null)
-            {
-                Layout["cpu"].Update(new Align(new Text("could not get cpu info"), HorizontalAlignment.Center, VerticalAlignment.Middle));
-                return;
-            }
+        _cpu.Update();
 
-            _cpu.Update();
+        // package info
+        var packageInfoGrid = new Grid().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn();
 
-            // package info
-            var packageInfoGrid = new Grid().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn();
+        packageInfoGrid.AddRow();
+        packageInfoGrid.AddRow("Total Load", GetPercentColorString(_cpu.Loads.Total), "%", "Bus Speed",
+            $"[grey]{_cpu.Clocks.BusSpeed.ToString("0.0").EscapeMarkup()}[/]", "MHz");
+        packageInfoGrid.AddRow("Package Temp", GetTempColorString(_cpu.Temps.PackageTemp), "C", "Core Temp Average",
+            GetTempColorString(_cpu.Temps.CoreAverage), "C");
 
-            packageInfoGrid.AddRow();
-            packageInfoGrid.AddRow("Total Load", GetPercentColorString(_cpu.Loads.Total), "%", "Bus Speed", $"[grey]{_cpu.Clocks.BusSpeed.ToString("0.0").EscapeMarkup()}[/]", "MHz");
-            packageInfoGrid.AddRow("Package Temp", GetTempColorString(_cpu.Temps.PackageTemp), "C", "Core Temp Average", GetTempColorString(_cpu.Temps.CoreAverage), "C");
+        // core info
+        var coresGrid = new Grid().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn();
 
-            // core info
-            var coresGrid = new Grid().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn().AddColumn();
+        coresGrid.AddRow("Core", "Load", " ", "Temp", " ", "Clock", " ");
 
-            coresGrid.AddRow("Core", "Load", " ", "Temp", " ", "Clock", " ");
+        foreach (var core in _cpu.Cores)
+            coresGrid.AddRow(
+                $"Core #{core.Number}",
+                GetPercentColorString(core.Load),
+                "%",
+                GetTempColorString(core.Temp),
+                "C",
+                $"[grey]{core.ClockSpeed.ToString("0.0").EscapeMarkup()}[/]",
+                "MHz"
+            );
 
-            foreach ( var core in _cpu.Cores )
-            {
-                coresGrid.AddRow(
-                    $"Core #{core.Number}",
-                           GetPercentColorString(core.Load),
-                           "%",
-                           GetTempColorString(core.Temp),
-                           "C",
-                           $"[grey]{core.ClockSpeed.ToString("0.0").EscapeMarkup()}[/]",
-                           "MHz"
-                           );
-            }
-
-            Layout["cpu"].Update(new Panel(
+        Layout["cpu"].Update(new Panel(
                 new Grid()
-                .AddColumn()
-                .AddRow(packageInfoGrid.Expand())
-                .AddRow()
-                .AddRow(new Rule("Cores").LeftJustified())
-                .AddRow(coresGrid.Expand())
-                )
-                .Header(_cpu.Name).Expand());
-        }
+                    .AddColumn()
+                    .AddRow(packageInfoGrid.Expand())
+                    .AddRow()
+                    .AddRow(new Rule("Cores").LeftJustified())
+                    .AddRow(coresGrid.Expand())
+            )
+            .Header(_cpu.Name).Expand());
     }
 }
