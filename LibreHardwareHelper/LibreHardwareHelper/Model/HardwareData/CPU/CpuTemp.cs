@@ -11,6 +11,7 @@ public class CpuTemp : PropertyNotifierBase
 
     private float _packageTemp;
 
+    // TODO: opinion on toLowering the strings?
     public CpuTemp(IHardware cpu, LibreHardwareHelper helper)
     {
         if (cpu == null) return;
@@ -41,6 +42,16 @@ public class CpuTemp : PropertyNotifierBase
                 {
                     //add cpu average temp
                     CoreAverage = s.Value ?? 0;
+                    break;
+                }
+                case "Core (Tct1/Tdie)":
+                {
+                    CoreAverage = s.Value ?? 0;
+                    break;
+                }
+                case "CCD1 (Tdie)":
+                {
+                    PackageTemp = s.Value ?? 0;
                     break;
                 }
             }

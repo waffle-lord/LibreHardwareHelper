@@ -35,7 +35,7 @@ public class LibreHardwareHelper : IDisposable
 
     private IHardware PrepHardware(IHardware hardware, HardwareType hardwareType, bool dontQueryHardware = false)
     {
-        if (hardware == null) hardware = _comp.Hardware.Where(x => x.HardwareType == hardwareType).FirstOrDefault();
+        if (hardware == null) hardware = _comp.Hardware.FirstOrDefault(x => x.HardwareType == hardwareType);
 
         if (hardware == null) return null;
 
@@ -99,18 +99,22 @@ public class LibreHardwareHelper : IDisposable
 
         var coreBuilders = new Dictionary<int, CpuCoreBuilder>();
 
-        var coreRelatedInfo = cpu.Sensors.Where(x => x.Name.StartsWith("CPU Core #")).ToArray();
+        var coreRelatedInfo = cpu.Sensors.Where(x => x.Name.ToLower().Contains("Core #")).ToArray();
+
+        // seems to be a consistent way to get only physical cores across types
+        var coreCount = coreRelatedInfo.Count(x => x.SensorType == SensorType.Clock);
 
         foreach (var s in coreRelatedInfo)
         {
-            var coreNumber = GetCoreNumber(s.Name);
+            // this should skip threads, atleast AMD is after all the cores, index starts at 1
+            if (s.Index > coreCount || s.Index == 0) continue;
 
             CpuCoreBuilder builder;
 
-            if (!coreBuilders.TryGetValue(coreNumber, out builder))
+            if (!coreBuilders.TryGetValue(s.Index, out builder))
             {
-                builder = new CpuCoreBuilder().WithNumber(coreNumber).WithName(s.Name);
-                coreBuilders.Add(coreNumber, builder);
+                builder = new CpuCoreBuilder().WithNumber(s.Index).WithName(s.Name);
+                coreBuilders.Add(s.Index, builder);
             }
 
             switch (s.SensorType)
@@ -136,7 +140,7 @@ public class LibreHardwareHelper : IDisposable
                 }
             }
 
-            coreBuilders[coreNumber] = builder;
+            coreBuilders[s.Index] = builder;
         }
 
 
