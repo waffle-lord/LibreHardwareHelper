@@ -5,11 +5,11 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU;
 public class CpuTemp : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
-    private float _CoreAverge;
+    private float _coreAverage;
 
-    private float _CoreMaxTemp;
+    private float _coreMaxTemp;
 
-    private float _PackageTemp;
+    private float _packageTemp;
 
     public CpuTemp(IHardware cpu, LibreHardwareHelper helper)
     {
@@ -49,20 +49,20 @@ public class CpuTemp : PropertyNotifierBase
 
     public float CoreAverage
     {
-        get => _CoreAverge;
-        private set => RaiseAndSetIfChanged(ref _CoreAverge, value);
+        get => _coreAverage;
+        private set => RaiseAndSetIfChanged(ref _coreAverage, value);
     }
 
     public float PackageTemp
     {
-        get => _PackageTemp;
-        private set => RaiseAndSetIfChanged(ref _PackageTemp, value);
+        get => _packageTemp;
+        private set => RaiseAndSetIfChanged(ref _packageTemp, value);
     }
 
     public float CoreMaxTemp
     {
-        get => _CoreMaxTemp;
-        private set => RaiseAndSetIfChanged(ref _CoreMaxTemp, value);
+        get => _coreMaxTemp;
+        private set => RaiseAndSetIfChanged(ref _coreMaxTemp, value);
     }
 
     /// <summary>

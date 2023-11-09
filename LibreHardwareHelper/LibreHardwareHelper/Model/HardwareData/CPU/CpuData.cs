@@ -8,7 +8,7 @@ public class CpuData : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
 
-    private string _Name;
+    private string _name;
 
     public CpuData(IHardware cpu, LibreHardwareHelper helper)
     {
@@ -32,8 +32,8 @@ public class CpuData : PropertyNotifierBase
 
     public string Name
     {
-        get => _Name;
-        private set => RaiseAndSetIfChanged(ref _Name, value);
+        get => _name;
+        private set => RaiseAndSetIfChanged(ref _name, value);
     }
 
     public CpuClock Clocks { get; }

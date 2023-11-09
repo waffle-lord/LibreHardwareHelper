@@ -5,7 +5,7 @@ namespace LibreHardware_Helper.Model.HardwareData.CPU;
 public class CpuClock : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
-    private float _BusSpeed;
+    private float _busSpeed;
 
     public CpuClock(IHardware cpu, LibreHardwareHelper helper)
     {
@@ -25,17 +25,17 @@ public class CpuClock : PropertyNotifierBase
 
     public float BusSpeed
     {
-        get => _BusSpeed;
-        private set => RaiseAndSetIfChanged(ref _BusSpeed, value);
+        get => _busSpeed;
+        private set => RaiseAndSetIfChanged(ref _busSpeed, value);
     }
 
     /// <summary>
     ///     Update this <see cref="CpuClock" /> objects data.
     /// </summary>
-    /// <param name="DontQueryHardware">Update the values of this object if they differ, but don't ask the hardware to update</param>
-    public void Update(bool DontQueryHardware = false)
+    /// <param name="dontQueryHardware">Update the values of this object if they differ, but don't ask the hardware to update</param>
+    public void Update(bool dontQueryHardware = false)
     {
-        var tempClocks = _helper.GetCpuClock(null, DontQueryHardware);
+        var tempClocks = _helper.GetCpuClock(null, dontQueryHardware);
 
         BusSpeed = tempClocks.BusSpeed;
     }

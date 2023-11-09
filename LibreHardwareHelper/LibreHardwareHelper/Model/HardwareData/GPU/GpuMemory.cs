@@ -6,16 +6,16 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU;
 public class GpuMemory : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
-    private float _AmountAvailable;
+    private float _amountAvailable;
 
 
-    private float _AmountUsed;
+    private float _amountUsed;
 
-    private float _D3DDedicatedUsed;
+    private float _d3DDedicatedUsed;
 
-    private float _D3DSharedUsed;
+    private float _d3DSharedUsed;
 
-    private float _Total;
+    private float _total;
 
     public GpuMemory(IHardware gpu, LibreHardwareHelper helper)
     {
@@ -61,36 +61,36 @@ public class GpuMemory : PropertyNotifierBase
 
     public float D3DDedicatedUsed
     {
-        get => _D3DDedicatedUsed;
-        private set => RaiseAndSetIfChanged(ref _D3DDedicatedUsed, value);
+        get => _d3DDedicatedUsed;
+        private set => RaiseAndSetIfChanged(ref _d3DDedicatedUsed, value);
     }
 
     public float D3DSharedUsed
     {
-        get => _D3DSharedUsed;
-        private set => RaiseAndSetIfChanged(ref _D3DSharedUsed, value);
+        get => _d3DSharedUsed;
+        private set => RaiseAndSetIfChanged(ref _d3DSharedUsed, value);
     }
 
     public float AmountUsed
     {
-        get => _AmountUsed;
-        private set => RaiseAndSetIfChanged(ref _AmountUsed, value);
+        get => _amountUsed;
+        private set => RaiseAndSetIfChanged(ref _amountUsed, value);
     }
 
     public float AmountAvailable
     {
-        get => _AmountAvailable;
-        private set => RaiseAndSetIfChanged(ref _AmountAvailable, value);
+        get => _amountAvailable;
+        private set => RaiseAndSetIfChanged(ref _amountAvailable, value);
     }
 
     public float Total
     {
-        get => _Total;
-        private set => RaiseAndSetIfChanged(ref _Total, value);
+        get => _total;
+        private set => RaiseAndSetIfChanged(ref _total, value);
     }
 
-    public float PercentUsed => (float)Math.Floor(_AmountUsed / _Total * 100);
-    public float PercentAvailable => (float)Math.Floor(_AmountAvailable / _Total * 100);
+    public float PercentUsed => (float)Math.Floor(_amountUsed / _total * 100);
+    public float PercentAvailable => (float)Math.Floor(_amountAvailable / _total * 100);
 
     public void Update()
     {

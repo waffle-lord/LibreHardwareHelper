@@ -33,13 +33,13 @@ public class LibreHardwareHelper : IDisposable
         _comp.Close();
     }
 
-    private IHardware PrepHardware(IHardware hardware, HardwareType hardwareType, bool DontQueryHardware = false)
+    private IHardware PrepHardware(IHardware hardware, HardwareType hardwareType, bool dontQueryHardware = false)
     {
         if (hardware == null) hardware = _comp.Hardware.Where(x => x.HardwareType == hardwareType).FirstOrDefault();
 
         if (hardware == null) return null;
 
-        if (!DontQueryHardware) hardware.Update();
+        if (!dontQueryHardware) hardware.Update();
 
         return hardware;
     }
@@ -206,9 +206,9 @@ public class LibreHardwareHelper : IDisposable
     {
         switch (_gpuKind)
         {
-            case GpuKind.NVIDIA:
+            case GpuKind.Nvidia:
                 return HardwareType.GpuNvidia;
-            case GpuKind.AMD:
+            case GpuKind.Amd:
                 return HardwareType.GpuAmd;
             default:
                 return null;
@@ -229,7 +229,7 @@ public class LibreHardwareHelper : IDisposable
 
                 if (gpu != null)
                 {
-                    _gpuKind = GpuKind.NVIDIA;
+                    _gpuKind = GpuKind.Nvidia;
                     break;
                 }
 
@@ -237,7 +237,7 @@ public class LibreHardwareHelper : IDisposable
 
                 if (gpu != null)
                 {
-                    _gpuKind = GpuKind.AMD;
+                    _gpuKind = GpuKind.Amd;
                     break;
                 }
 
@@ -246,10 +246,10 @@ public class LibreHardwareHelper : IDisposable
                 return new GpuData(null, GpuKind.None, this);
             case GpuKind.None:
                 return new GpuData(null, GpuKind.None, this);
-            case GpuKind.NVIDIA:
+            case GpuKind.Nvidia:
                 gpu = PrepHardware(gpu, HardwareType.GpuNvidia);
                 break;
-            case GpuKind.AMD:
+            case GpuKind.Amd:
                 gpu = PrepHardware(gpu, HardwareType.GpuAmd);
                 break;
         }

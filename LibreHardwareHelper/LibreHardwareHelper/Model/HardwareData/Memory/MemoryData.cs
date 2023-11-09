@@ -6,25 +6,25 @@ namespace LibreHardware_Helper.Model.HardwareData.Memory;
 public class MemoryData : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
-    private float _AmountAvailable;
+    private float _amountAvailable;
 
-    private float _AmountUsed;
+    private float _amountUsed;
 
-    private float _PercentUsed;
+    private float _percentUsed;
 
-    private float _VirtualAmountAvailable;
+    private float _virtualAmountAvailable;
 
-    private float _VirtualAmountUsed;
+    private float _virtualAmountUsed;
 
-    private float _VirtualPercentUsed;
+    private float _virtualPercentUsed;
 
-    public MemoryData(IHardware Memory, LibreHardwareHelper helper)
+    public MemoryData(IHardware memory, LibreHardwareHelper helper)
     {
-        if (Memory.HardwareType != HardwareType.Memory) return;
+        if (memory.HardwareType != HardwareType.Memory) return;
 
         _helper = helper;
 
-        foreach (var s in Memory.Sensors)
+        foreach (var s in memory.Sensors)
             switch (s.Name)
             {
                 case "Memory":
@@ -62,12 +62,12 @@ public class MemoryData : PropertyNotifierBase
 
     public float PercentUsed
     {
-        get => _PercentUsed;
+        get => _percentUsed;
         private set
         {
-            if (_PercentUsed != value)
+            if (_percentUsed != value)
             {
-                _PercentUsed = value;
+                _percentUsed = value;
                 RaisePropertyChanged(nameof(PercentUsed));
                 RaisePropertyChanged(nameof(PercentAvailable));
             }
@@ -76,12 +76,12 @@ public class MemoryData : PropertyNotifierBase
 
     public float AmountUsed
     {
-        get => _AmountUsed;
+        get => _amountUsed;
         private set
         {
-            if (_AmountUsed != value)
+            if (_amountUsed != value)
             {
-                _AmountUsed = value;
+                _amountUsed = value;
                 RaisePropertyChanged(nameof(AmountUsed));
                 RaisePropertyChanged(nameof(Total));
             }
@@ -90,18 +90,18 @@ public class MemoryData : PropertyNotifierBase
 
     public float AmountAvailable
     {
-        get => _AmountAvailable;
-        private set => RaiseAndSetIfChanged(ref _AmountAvailable, value);
+        get => _amountAvailable;
+        private set => RaiseAndSetIfChanged(ref _amountAvailable, value);
     }
 
     public float VirtualPercentUsed
     {
-        get => _VirtualPercentUsed;
+        get => _virtualPercentUsed;
         private set
         {
-            if (_VirtualPercentUsed != value)
+            if (_virtualPercentUsed != value)
             {
-                _VirtualPercentUsed = value;
+                _virtualPercentUsed = value;
                 RaisePropertyChanged(nameof(VirtualPercentUsed));
                 RaisePropertyChanged(nameof(VirtualPercentAvailable));
             }
@@ -110,12 +110,12 @@ public class MemoryData : PropertyNotifierBase
 
     public float VirtualAmountUsed
     {
-        get => _VirtualAmountUsed;
+        get => _virtualAmountUsed;
         private set
         {
-            if (_VirtualAmountUsed != value)
+            if (_virtualAmountUsed != value)
             {
-                _VirtualAmountUsed = value;
+                _virtualAmountUsed = value;
                 RaisePropertyChanged(nameof(VirtualAmountUsed));
                 RaisePropertyChanged(nameof(VirtualTotal));
             }
@@ -124,8 +124,8 @@ public class MemoryData : PropertyNotifierBase
 
     public float VirtualAmountAvailable
     {
-        get => _VirtualAmountAvailable;
-        private set => RaiseAndSetIfChanged(ref _VirtualAmountAvailable, value);
+        get => _virtualAmountAvailable;
+        private set => RaiseAndSetIfChanged(ref _virtualAmountAvailable, value);
     }
 
     public float Total => AmountUsed + AmountAvailable;

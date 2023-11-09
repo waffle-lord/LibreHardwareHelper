@@ -23,8 +23,8 @@ public class PropertyNotifierBase : INotifyPropertyChanged
         return newValue;
     }
 
-    protected virtual void RaisePropertyChanged(string Property)
+    protected virtual void RaisePropertyChanged(string property)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
     }
 }

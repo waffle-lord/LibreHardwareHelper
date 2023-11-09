@@ -5,47 +5,47 @@
 /// </summary>
 public class CpuCore : PropertyNotifierBase
 {
-    private float _ClockSpeed;
+    private float _clockSpeed;
 
-    private float _Load;
+    private float _load;
 
-    private string _Name;
-    private int _Number;
+    private string _name;
+    private int _number;
 
-    private float _Temp;
+    private float _temp;
 
-    private float _TjMaxDistance;
+    private float _tjMaxDistance;
 
-    public CpuCore(int Number, string Name, float Temp, float Load, float ClockSpeed, float TjMaxDistance)
+    public CpuCore(int number, string name, float temp, float load, float clockSpeed, float tjMaxDistance)
     {
-        this.Number = Number;
-        this.Name = Name;
-        this.Temp = Temp;
-        this.Load = Load;
-        this.ClockSpeed = ClockSpeed;
-        this.TjMaxDistance = TjMaxDistance;
+        this.Number = number;
+        this.Name = name;
+        this.Temp = temp;
+        this.Load = load;
+        this.ClockSpeed = clockSpeed;
+        this.TjMaxDistance = tjMaxDistance;
     }
 
     public int Number
     {
-        get => _Number;
-        private set => RaiseAndSetIfChanged(ref _Number, value);
+        get => _number;
+        private set => RaiseAndSetIfChanged(ref _number, value);
     }
 
     public string Name
     {
-        get => _Name;
-        private set => RaiseAndSetIfChanged(ref _Name, value);
+        get => _name;
+        private set => RaiseAndSetIfChanged(ref _name, value);
     }
 
     public float Temp
     {
-        get => _Temp;
+        get => _temp;
         private set
         {
-            if (_Temp != value)
+            if (_temp != value)
             {
-                _Temp = value;
+                _temp = value;
                 RaisePropertyChanged(nameof(Temp));
                 RaisePropertyChanged(nameof(TempPercentage));
             }
@@ -64,20 +64,20 @@ public class CpuCore : PropertyNotifierBase
 
     public float Load
     {
-        get => _Load;
-        private set => RaiseAndSetIfChanged(ref _Load, value);
+        get => _load;
+        private set => RaiseAndSetIfChanged(ref _load, value);
     }
 
     public float ClockSpeed
     {
-        get => _ClockSpeed;
-        private set => RaiseAndSetIfChanged(ref _ClockSpeed, value);
+        get => _clockSpeed;
+        private set => RaiseAndSetIfChanged(ref _clockSpeed, value);
     }
 
     public float TjMaxDistance
     {
-        get => _TjMaxDistance;
-        private set => RaiseAndSetIfChanged(ref _TjMaxDistance, value);
+        get => _tjMaxDistance;
+        private set => RaiseAndSetIfChanged(ref _tjMaxDistance, value);
     }
 
     public float MaxTemp => Temp + TjMaxDistance;
@@ -86,13 +86,13 @@ public class CpuCore : PropertyNotifierBase
     ///     Update this <see cref="CpuCore" /> objects data.
     /// </summary>
     /// <param name="DontQueryHardware">Update the values of this object if they differ, but don't ask the hardware to update</param>
-    public void Update(CpuCore Core)
+    public void Update(CpuCore core)
     {
-        if (Core.Name != Name) return;
+        if (core.Name != Name) return;
 
-        Temp = Core.Temp;
-        Load = Core.Load;
-        ClockSpeed = Core.ClockSpeed;
-        TjMaxDistance = Core.TjMaxDistance;
+        Temp = core.Temp;
+        Load = core.Load;
+        ClockSpeed = core.ClockSpeed;
+        TjMaxDistance = core.TjMaxDistance;
     }
 }

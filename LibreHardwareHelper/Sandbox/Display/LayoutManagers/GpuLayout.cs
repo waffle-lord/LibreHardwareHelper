@@ -38,8 +38,8 @@ internal class GpuLayout : LayoutManagerBase, IDisplayLayout
             .AddRow("Mem Controller", GetPercentColorString(_gpu.Loads.MemoryController), "%")
             .AddRow("Bus Load", GetPercentColorString(_gpu.Loads.Bus), "%")
             .AddRow("Power Load", GetPercentColorString(_gpu.Loads.Power), "%")
-            .AddRow("Trasmit", $"[grey]{Math.Round(_gpu.Throughput.PCIeTrasmit / 1024 / 1024, 1)}[/]", "Mb")
-            .AddRow("Receive", $"[grey]{Math.Round(_gpu.Throughput.PCIeReceive / 1024 / 1024, 1)}[/]", "Mb");
+            .AddRow("Trasmit", $"[grey]{Math.Round(_gpu.Throughput.PcIeTrasmit / 1024 / 1024, 1)}[/]", "Mb")
+            .AddRow("Receive", $"[grey]{Math.Round(_gpu.Throughput.PcIeReceive / 1024 / 1024, 1)}[/]", "Mb");
 
 
         var gpuMemory = new BreakdownChart()

@@ -4,6 +4,6 @@ public enum GpuKind
 {
     Unknown = 0,
     None = 1,
-    NVIDIA = 2,
-    AMD = 3
+    Nvidia = 2,
+    Amd = 3
 }

@@ -7,9 +7,9 @@ public class GpuThroughput : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
 
-    private float _PCIeReceive;
+    private float _pcIeReceive;
 
-    private float _PCIeTransmit;
+    private float _pcIeTransmit;
 
 
     public GpuThroughput(IHardware gpu, LibreHardwareHelper helper)
@@ -29,35 +29,35 @@ public class GpuThroughput : PropertyNotifierBase
             {
                 case "GPU PCIe Rx":
                 {
-                    PCIeReceive = s.Value ?? 0;
+                    PcIeReceive = s.Value ?? 0;
                     continue;
                 }
                 case "GPU PCIe Tx":
                 {
-                    PCIeTrasmit = s.Value ?? 0;
+                    PcIeTrasmit = s.Value ?? 0;
                     continue;
                 }
             }
         }
     }
 
-    public float PCIeTrasmit
+    public float PcIeTrasmit
     {
-        get => _PCIeTransmit;
-        private set => RaiseAndSetIfChanged(ref _PCIeTransmit, value);
+        get => _pcIeTransmit;
+        private set => RaiseAndSetIfChanged(ref _pcIeTransmit, value);
     }
 
-    public float PCIeReceive
+    public float PcIeReceive
     {
-        get => _PCIeReceive;
-        private set => RaiseAndSetIfChanged(ref _PCIeReceive, value);
+        get => _pcIeReceive;
+        private set => RaiseAndSetIfChanged(ref _pcIeReceive, value);
     }
 
     public void Update()
     {
         var throughput = _helper.GetGpuThroughput();
 
-        PCIeReceive = throughput.PCIeReceive;
-        PCIeTrasmit = throughput.PCIeTrasmit;
+        PcIeReceive = throughput.PcIeReceive;
+        PcIeTrasmit = throughput.PcIeTrasmit;
     }
 }

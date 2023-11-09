@@ -6,13 +6,13 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU;
 public class GpuClock : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
-    private float _Core;
+    private float _core;
 
-    private float _Memory;
+    private float _memory;
 
-    private float _Shader;
+    private float _shader;
 
-    private float _Video;
+    private float _video;
 
     public GpuClock(IHardware gpu, LibreHardwareHelper helper)
     {
@@ -55,26 +55,26 @@ public class GpuClock : PropertyNotifierBase
 
     public float Core
     {
-        get => _Core;
-        private set => RaiseAndSetIfChanged(ref _Core, value);
+        get => _core;
+        private set => RaiseAndSetIfChanged(ref _core, value);
     }
 
     public float Memory
     {
-        get => _Memory;
-        private set => RaiseAndSetIfChanged(ref _Memory, value);
+        get => _memory;
+        private set => RaiseAndSetIfChanged(ref _memory, value);
     }
 
     public float Shader
     {
-        get => _Shader;
-        private set => RaiseAndSetIfChanged(ref _Shader, value);
+        get => _shader;
+        private set => RaiseAndSetIfChanged(ref _shader, value);
     }
 
     public float Video
     {
-        get => _Video;
-        private set => RaiseAndSetIfChanged(ref _Video, value);
+        get => _video;
+        private set => RaiseAndSetIfChanged(ref _video, value);
     }
 
     public void Update()

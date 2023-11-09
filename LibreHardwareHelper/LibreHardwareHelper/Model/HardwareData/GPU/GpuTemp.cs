@@ -6,7 +6,7 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU;
 public class GpuTemp : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
-    private float _Core;
+    private float _core;
 
     public GpuTemp(IHardware gpu, LibreHardwareHelper helper)
     {
@@ -31,8 +31,8 @@ public class GpuTemp : PropertyNotifierBase
 
     public float Core
     {
-        get => _Core;
-        private set => RaiseAndSetIfChanged(ref _Core, value);
+        get => _core;
+        private set => RaiseAndSetIfChanged(ref _core, value);
     }
 
     public void Update()

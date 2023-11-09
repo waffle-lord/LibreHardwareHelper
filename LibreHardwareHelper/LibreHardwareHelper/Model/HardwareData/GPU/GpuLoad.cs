@@ -24,24 +24,24 @@ namespace LibreHardware_Helper.Model.HardwareData.GPU;
 public class GpuLoad : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
-    private float _BoardPower;
+    private float _boardPower;
 
 
-    private float _Bus;
+    private float _bus;
 
-    private float _Core;
-
-
-    private float _Memory;
+    private float _core;
 
 
-    private float _MemoryController;
+    private float _memory;
 
 
-    private float _Power;
+    private float _memoryController;
 
 
-    private float _VideoEngine;
+    private float _power;
+
+
+    private float _videoEngine;
 
     public GpuLoad(IHardware gpu, LibreHardwareHelper helper)
     {
@@ -97,44 +97,44 @@ public class GpuLoad : PropertyNotifierBase
 
     public float Core
     {
-        get => _Core;
-        private set => RaiseAndSetIfChanged(ref _Core, value);
+        get => _core;
+        private set => RaiseAndSetIfChanged(ref _core, value);
     }
 
     public float MemoryController
     {
-        get => _MemoryController;
-        private set => RaiseAndSetIfChanged(ref _MemoryController, value);
+        get => _memoryController;
+        private set => RaiseAndSetIfChanged(ref _memoryController, value);
     }
 
     public float VideoEngine
     {
-        get => _VideoEngine;
-        private set => RaiseAndSetIfChanged(ref _VideoEngine, value);
+        get => _videoEngine;
+        private set => RaiseAndSetIfChanged(ref _videoEngine, value);
     }
 
     public float Bus
     {
-        get => _Bus;
-        private set => RaiseAndSetIfChanged(ref _Bus, value);
+        get => _bus;
+        private set => RaiseAndSetIfChanged(ref _bus, value);
     }
 
     public float Memory
     {
-        get => _Memory;
-        private set => RaiseAndSetIfChanged(ref _Memory, value);
+        get => _memory;
+        private set => RaiseAndSetIfChanged(ref _memory, value);
     }
 
     public float Power
     {
-        get => _Power;
-        private set => RaiseAndSetIfChanged(ref _Power, value);
+        get => _power;
+        private set => RaiseAndSetIfChanged(ref _power, value);
     }
 
     public float BoardPower
     {
-        get => _BoardPower;
-        private set => RaiseAndSetIfChanged(ref _BoardPower, value);
+        get => _boardPower;
+        private set => RaiseAndSetIfChanged(ref _boardPower, value);
     }
 
     public void Update()

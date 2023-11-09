@@ -6,7 +6,7 @@ public class CpuLoad : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
 
-    private float _Total;
+    private float _total;
 
     public CpuLoad(IHardware cpu, LibreHardwareHelper helper)
     {
@@ -26,17 +26,17 @@ public class CpuLoad : PropertyNotifierBase
 
     public float Total
     {
-        get => _Total;
-        private set => RaiseAndSetIfChanged(ref _Total, value);
+        get => _total;
+        private set => RaiseAndSetIfChanged(ref _total, value);
     }
 
     /// <summary>
     ///     Update this <see cref="CpuLoad" /> objects data
     /// </summary>
-    /// <param name="DontQueryHardware">Update the values of this object if they differ, but don't ask the hardware to update</param>
-    public void Update(bool DontQueryHardware = false)
+    /// <param name="dontQueryHardware">Update the values of this object if they differ, but don't ask the hardware to update</param>
+    public void Update(bool dontQueryHardware = false)
     {
-        var tempLoads = _helper.GetCpuLoad(null, DontQueryHardware);
+        var tempLoads = _helper.GetCpuLoad(null, dontQueryHardware);
 
         Total = tempLoads.Total;
     }

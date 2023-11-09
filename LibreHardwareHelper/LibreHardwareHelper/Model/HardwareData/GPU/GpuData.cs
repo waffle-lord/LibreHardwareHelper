@@ -40,7 +40,7 @@ public class GpuData : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
 
-    private string _Name;
+    private string _name;
 
     public GpuData(IHardware gpu, GpuKind kind, LibreHardwareHelper helper)
     {
@@ -69,8 +69,8 @@ public class GpuData : PropertyNotifierBase
 
     public string Name
     {
-        get => _Name;
-        private set => RaiseAndSetIfChanged(ref _Name, value);
+        get => _name;
+        private set => RaiseAndSetIfChanged(ref _name, value);
     }
 
     public GpuKind Kind { get; }
