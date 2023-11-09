@@ -26,6 +26,7 @@ public class CpuTemp : PropertyNotifierBase
 
             switch (s.Name)
             {
+                case "CCD1 (Tdie)":
                 case "CPU Package":
                 {
                     //add pacakge temp
@@ -38,20 +39,11 @@ public class CpuTemp : PropertyNotifierBase
                     CoreMaxTemp = s.Value ?? 0;
                     break;
                 }
+                case "Core (Tctl/Tdie)":
                 case "Core Average":
                 {
                     //add cpu average temp
                     CoreAverage = s.Value ?? 0;
-                    break;
-                }
-                case "Core (Tctl/Tdie)":
-                {
-                    CoreAverage = s.Value ?? 0;
-                    break;
-                }
-                case "CCD1 (Tdie)":
-                {
-                    PackageTemp = s.Value ?? 0;
                     break;
                 }
             }
