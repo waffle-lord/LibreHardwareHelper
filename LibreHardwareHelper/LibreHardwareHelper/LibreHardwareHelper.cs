@@ -99,7 +99,7 @@ public class LibreHardwareHelper : IDisposable
 
         var coreBuilders = new Dictionary<int, CpuCoreBuilder>();
 
-        var coreRelatedInfo = cpu.Sensors.Where(x => x.Name.ToLower().Contains("Core #")).ToArray();
+        var coreRelatedInfo = cpu.Sensors.Where(x => x.Name.ToLower().Contains("core #")).ToArray();
 
         // seems to be a consistent way to get only physical cores across types
         var coreCount = coreRelatedInfo.Count(x => x.SensorType == SensorType.Clock);
@@ -142,7 +142,6 @@ public class LibreHardwareHelper : IDisposable
 
             coreBuilders[s.Index] = builder;
         }
-
 
         foreach (var builder in coreBuilders.Values) cores.Add(builder.Build());
 

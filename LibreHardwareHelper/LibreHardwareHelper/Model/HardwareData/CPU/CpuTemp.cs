@@ -44,7 +44,7 @@ public class CpuTemp : PropertyNotifierBase
                     CoreAverage = s.Value ?? 0;
                     break;
                 }
-                case "Core (Tct1/Tdie)":
+                case "Core (Tctl/Tdie)":
                 {
                     CoreAverage = s.Value ?? 0;
                     break;
