@@ -19,7 +19,7 @@ public class GpuMemory : PropertyNotifierBase
 
     public GpuMemory(IHardware gpu, LibreHardwareHelper helper)
     {
-        if (gpu.HardwareType != HardwareType.GpuNvidia && gpu.HardwareType != HardwareType.GpuAmd)
+        if (gpu.HardwareType != HardwareType.GpuNvidia && gpu.HardwareType != HardwareType.GpuAmd && gpu.HardwareType != HardwareType.GpuIntel)
             throw new ArgumentException("provided arg is not supported gpu hardware");
 
         _helper = helper;

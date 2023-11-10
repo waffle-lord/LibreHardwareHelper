@@ -1,5 +1,6 @@
 ﻿namespace LibreHardware_Helper.Model.HardwareData.CPU;
 
+// TODO: this is currently never used
 public class CoreInfo : PropertyNotifierBase
 {
     private readonly LibreHardwareHelper _helper;
