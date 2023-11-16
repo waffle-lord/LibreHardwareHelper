@@ -24,6 +24,7 @@ public class CpuPower : PropertyNotifierBase
         foreach (var s in cpu.Sensors)
             switch (s.Name)
             {
+                case "Package":
                 case "CPU Package":
                 {
                     Package = s.Value ?? 0;
