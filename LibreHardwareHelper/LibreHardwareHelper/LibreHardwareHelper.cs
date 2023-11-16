@@ -62,16 +62,6 @@ public class LibreHardwareHelper : IDisposable
 
     #region Cpu Data
 
-    // TODO: only used from a class that is not used. Remove?
-    internal int GetCoreNumber(string coreName)
-    {
-        int coreNumber;
-
-        if (int.TryParse(coreName.Replace("CPU Core #", "")[0].ToString(), out coreNumber)) return coreNumber;
-
-        return -1;
-    }
-
     /// <summary>
     ///     Get all CPU related data
     /// </summary>
