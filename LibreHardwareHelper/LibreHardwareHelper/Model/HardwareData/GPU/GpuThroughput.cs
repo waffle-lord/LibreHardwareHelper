@@ -16,7 +16,7 @@ public class GpuThroughput : PropertyNotifierBase
     {
         if (gpu == null) return;
 
-        if (gpu.HardwareType != HardwareType.GpuNvidia && gpu.HardwareType != HardwareType.GpuAmd)
+        if (gpu.HardwareType != HardwareType.GpuNvidia && gpu.HardwareType != HardwareType.GpuAmd && gpu.HardwareType != HardwareType.GpuIntel)
             throw new ArgumentException("provided arg is not supported gpu hardware");
 
         _helper = helper;

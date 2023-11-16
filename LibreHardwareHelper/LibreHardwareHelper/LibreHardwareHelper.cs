@@ -62,15 +62,6 @@ public class LibreHardwareHelper : IDisposable
 
     #region Cpu Data
 
-    internal int GetCoreNumber(string coreName)
-    {
-        int coreNumber;
-
-        if (int.TryParse(coreName.Replace("CPU Core #", "")[0].ToString(), out coreNumber)) return coreNumber;
-
-        return -1;
-    }
-
     /// <summary>
     ///     Get all CPU related data
     /// </summary>
@@ -213,6 +204,8 @@ public class LibreHardwareHelper : IDisposable
                 return HardwareType.GpuNvidia;
             case GpuKind.Amd:
                 return HardwareType.GpuAmd;
+            case GpuKind.Intel:
+                return HardwareType.GpuIntel;
             default:
                 return null;
         }
@@ -244,6 +237,14 @@ public class LibreHardwareHelper : IDisposable
                     break;
                 }
 
+                gpu = PrepHardware(gpu, HardwareType.GpuIntel);
+
+                if (gpu != null)
+                {
+                    _gpuKind = GpuKind.Intel;
+                    break;
+                }
+
                 _gpuKind = GpuKind.None;
 
                 return new GpuData(null, GpuKind.None, this);
@@ -254,6 +255,9 @@ public class LibreHardwareHelper : IDisposable
                 break;
             case GpuKind.Amd:
                 gpu = PrepHardware(gpu, HardwareType.GpuAmd);
+                break;
+            case GpuKind.Intel:
+                gpu = PrepHardware(gpu, HardwareType.GpuIntel);
                 break;
         }
 
